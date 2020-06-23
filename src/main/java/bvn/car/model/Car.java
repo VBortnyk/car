@@ -1,13 +1,13 @@
 package bvn.car.model;
 
-import bvn.car.Transport;
+import bvn.car.interfaces.Movable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Car extends Transport {
+public class Car implements Movable {
     private String brand;
     private String model;
     private LocalDate manufactureDate;
@@ -23,19 +23,7 @@ public class Car extends Transport {
 
     @Override
     public void move() {
-        System.out.println("I'm riding on the road");
-    }
-
-    public int changeCurrentSpeed(int changeValue) {
-        if (currentSpeed + changeValue > maxSpeed) {
-            currentSpeed = maxSpeed;
-            return currentSpeed;
-        }
-        if (currentSpeed - changeValue < 0) {
-            currentSpeed = 0;
-            return currentSpeed;
-        }
-        return currentSpeed + changeValue;
+        System.out.println("I'm driving on the road");
     }
 
     public boolean addPassenger(Passenger passenger) {
@@ -74,12 +62,23 @@ public class Car extends Transport {
 
     public void addWheels(int quantity) {
         while (quantity > 0) {
-            int currentRadius = wheels.get(1).getRadius();
-            Tire tire = new Tire(1, "someProducer", currentRadius);
-            Wheel wheel = new Wheel((long) this.wheels.size(), currentRadius, tire);
+            Tire tire = new Tire(1, "someProducer", 16);
+            Wheel wheel = new Wheel((long) this.wheels.size(), 16, tire);
             wheels.add(wheel);
             quantity--;
         }
+    }
+
+    public int changeCurrentSpeed(int changeValue) {
+        if (currentSpeed + changeValue > maxSpeed) {
+            currentSpeed = maxSpeed;
+            return currentSpeed;
+        }
+        if (currentSpeed + changeValue < 0) {
+            currentSpeed = 0;
+            return 0;
+        }
+        return currentSpeed + changeValue;
     }
 
     public double getMaxSpeedPossible() {
@@ -157,7 +156,7 @@ public class Car extends Transport {
     }
 
     public int getPassengersPresent() {
-        return passengersPresent;
+        return passengers.size();
     }
 
     public void setPassengersPresent(int passengersPresent) {

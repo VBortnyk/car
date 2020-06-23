@@ -4,14 +4,12 @@ import java.util.Objects;
 
 public class Door {
     private int id;
-    private DoorMarker doorMarker;
     private String carModel;
     private boolean closed;
     private boolean windowClosed;
 
-    public Door(int id, DoorMarker doorMarker, String carModel) {
+    public Door(int id, String carModel) {
         this.id = id;
-        this.doorMarker = doorMarker;
         this.carModel = carModel;
     }
 
@@ -56,14 +54,6 @@ public class Door {
         this.id = id;
     }
 
-    public DoorMarker getDoorMarker() {
-        return doorMarker;
-    }
-
-    public void setDoorMarker(DoorMarker doorMarker) {
-        this.doorMarker = doorMarker;
-    }
-
     public String getCarModel() {
         return carModel;
     }
@@ -100,28 +90,22 @@ public class Door {
         return getId() == door.getId()
                 && isClosed() == door.isClosed()
                 && isWindowClosed() == door.isWindowClosed()
-                && getDoorMarker() == door.getDoorMarker()
                 && Objects.equals(getCarModel(), door.getCarModel());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getDoorMarker(), getCarModel());
+        return Objects.hash(getId(), getCarModel());
     }
 
     @Override
     public String toString() {
         return "Door{"
                 + "id=" + id
-                + ", doorMarker=" + doorMarker
                 + ", carModel='" + carModel + '\''
                 + ", closed=" + closed
                 + ", windowClosed=" + windowClosed
                 + '}';
-    }
-
-    public enum DoorMarker {
-        FRONT_LEFT, FRONT_RIGHT, BACK_LEFT, BACK_RIGHT;
     }
 }
 
