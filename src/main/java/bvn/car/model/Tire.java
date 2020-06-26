@@ -1,16 +1,39 @@
 package bvn.car.model;
 
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "tires")
 public class Tire {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "wear_state")
     private double wearState;
     private String producer;
     private int radius;
+
+    public Tire() {
+    }
 
     public Tire(double wearState, String producer, int radius) {
         this.wearState = wearState;
         this.producer = producer;
         this.radius = radius;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public double getWearState() {

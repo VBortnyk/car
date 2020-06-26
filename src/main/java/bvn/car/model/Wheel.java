@@ -1,18 +1,32 @@
 package bvn.car.model;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "wheels")
 public class Wheel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private final int radius;
+    private int radius;
+    @OneToOne
     private Tire tire;
 
-    public Wheel(Long id, int radius) {
+    public Wheel() {
+    }
+
+    public Wheel(int radius) {
         this.id = id;
         this.radius = radius;
     }
 
-    public Wheel(Long id, int radius, Tire tire) {
+    public Wheel(int radius, Tire tire) {
         this.id = id;
         this.radius = radius;
         this.tire = tire;

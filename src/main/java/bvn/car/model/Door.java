@@ -1,16 +1,34 @@
 package bvn.car.model;
 
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+@Entity
+@Table(name = "doors")
 public class Door {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "car_model")
     private String carModel;
+    @Transient
     private boolean closed;
+    @Transient
     private boolean windowClosed;
 
-    public Door(int id, String carModel) {
-        this.id = id;
+    public Door() {
+    }
+
+    public Door(String carModel) {
         this.carModel = carModel;
+        this.closed = true;
+        this.windowClosed = true;
     }
 
     public void openDoor() {
@@ -46,11 +64,11 @@ public class Door {
         }
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
