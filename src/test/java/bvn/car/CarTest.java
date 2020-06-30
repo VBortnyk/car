@@ -16,16 +16,16 @@ public class CarTest {
 
     @Test
     public void openDoorValid() {
-        Door door = new Door(1, "Audi");
+        Door door = new Door("Audi");
         boolean closed = door.isClosed();
-        Assert.assertFalse(closed);
+        Assert.assertTrue(closed);
     }
 
     @Test
     public void openDoorNotValid() {
-        Door door = new Door(1, "Audi");
+        Door door = new Door("Audi");
         boolean closed = door.isClosed();
-        Assert.assertTrue(!closed);
+        Assert.assertFalse(!closed);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class CarTest {
         double wearState = 0.8;
         while (testCar.getWheels().size() < 4) {
             Tire tire = new Tire(wearState, "GoodYear", 16);
-            Wheel wheel = new Wheel((long) testCar.getWheels().size() + 1, 16, tire);
+            Wheel wheel = new Wheel( 16, tire);
             testCar.getWheels().add(wheel);
         }
         double expectedSpeedPossible = testCar.getMaxSpeed() * wearState;
@@ -76,7 +76,7 @@ public class CarTest {
             double wearState = 0.8;
             while (testCar.getWheels().size() < 4) {
                 Tire tire = new Tire(wearState, "GoodYear", 16);
-                Wheel wheel = new Wheel((long) testCar.getWheels().size() + 1, 16, tire);
+                Wheel wheel = new Wheel(16, tire);
                 testCar.getWheels().add(wheel);
             }
         } catch (NullPointerException e) {

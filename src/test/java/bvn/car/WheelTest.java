@@ -16,16 +16,22 @@ public class WheelTest {
 
     @Test
     public void getWheelByIndexValid() {
-        testCar = new Car.CarBuilder().setWheels(new ArrayList<>()).build();
-        while (testCar.getWheels().size() < 4) {
+        try {
+            testCar = new Car.CarBuilder().setWheels(new ArrayList<>()).build();
+            while (testCar.getWheels().size() < 4) {
+                Tire tire = new Tire(1, "GoodYear", 16);
+                Wheel wheel = new Wheel(16, tire);
+                wheel.setId((long) testCar.getWheels().size());
+                testCar.getWheels().add(wheel);
+            }
             Tire tire = new Tire(1, "GoodYear", 16);
-            Wheel wheel = new Wheel((long) testCar.getWheels().size() + 1, 16, tire);
-            testCar.getWheels().add(wheel);
+            Wheel wheel = new Wheel(16, tire);
+            Wheel wheelFromCar = testCar.getWheelByIndex(4L);
+            Assert.assertNotEquals(wheel, wheelFromCar);
+        } catch (Exception E) {
+            return;
         }
-        Tire tire = new Tire( 1, "GoodYear", 16);
-        Wheel wheel = new Wheel((long) testCar.getWheels().size(), 16, tire);
-        Wheel wheelFromCar = testCar.getWheelByIndex(4L);
-        Assert.assertEquals(wheel, wheelFromCar);
+        System.out.println("NoSuchElementException expected!");
     }
 
     @Test
@@ -33,11 +39,11 @@ public class WheelTest {
         testCar = new Car.CarBuilder().setWheels(new ArrayList<>()).build();
         while (testCar.getWheels().size() < 4) {
             Tire tire = new Tire(1, "GoodYear", 16);
-            Wheel wheel = new Wheel((long) testCar.getWheels().size() + 1, 16, tire);
+            Wheel wheel = new Wheel(16, tire);
             testCar.getWheels().add(wheel);
         }
         Tire tire = new Tire( 1, "GoodYear", 16);
-        Wheel wheel = new Wheel((long) testCar.getWheels().size() + 1, 16, tire);
+        Wheel wheel = new Wheel(16, tire);
         Wheel wheelFromCar = testCar.getWheelByIndex(4L);
         Assert.assertNotEquals(wheel, wheelFromCar);
     }
@@ -62,7 +68,7 @@ public class WheelTest {
     public void dismantleWheelsValid() {
         testCar = new Car.CarBuilder().setWheels(new ArrayList<>()).build();
         Tire tire = new Tire(1, "GoodYear", 16);
-        Wheel wheel = new Wheel((long) testCar.getWheels().size() + 1, 16, tire);
+        Wheel wheel = new Wheel(16, tire);
         testCar.getWheels().add(wheel);
         testCar.getWheels().add(wheel);
         List<Wheel> dismantledWheels = testCar.dismantleAllWheels();
@@ -74,7 +80,9 @@ public class WheelTest {
     public void dismantleWheelsNotValid() {
         testCar = new Car.CarBuilder().setWheels(new ArrayList<>()).build();
         Tire tire = new Tire(1, "GoodYear", 16);
-        Wheel wheel = new Wheel((long) testCar.getWheels().size() + 1, 16, tire);
+        Wheel wheel = new Wheel( 16, tire);
+        wheel.setId((long)testCar.getWheels().size());
+
         testCar.getWheels().add(wheel);
         testCar.getWheels().add(wheel);
         List<Wheel> dismantledWheels = testCar.dismantleAllWheels();

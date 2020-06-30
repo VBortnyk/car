@@ -1,8 +1,9 @@
-package bvn.car.service;
+package bvn.car.dao;
 
 import bvn.car.model.Car;
 
-public interface CarService {
+public interface CarDao {
 
     Car create(Car car);
+
 }

@@ -3,28 +3,38 @@ package bvn.car.model;
 import bvn.car.interfaces.Movable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+@Entity
+@Table(name = "cars")
 public class Car implements Movable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String brand;
     private String model;
     private LocalDate manufactureDate;
     private String engineType;
     private int maxSpeed;
+    @Transient
     private int currentSpeed;
     private double accelerationTime;
     private int capacity;
     private int passengersPresent;
+    @OneToMany
     private List<Passenger> passengers;
+    @OneToMany
     private List<Wheel> wheels;
-    private Door[] doors;
-
-    @Override
-    public void move() {
-        System.out.println("I'm driving on the road");
-    }
+    @OneToMany
+    private List<Door> doors;
 
     public boolean addPassenger(Passenger passenger) {
         if (passengersPresent == capacity) {
@@ -33,6 +43,11 @@ public class Car implements Movable {
         passengers.add(passenger);
         passengersPresent++;
         return true;
+    }
+
+    @Override
+    public void move() {
+        System.out.println("I'm driving on the road");
     }
 
     public boolean dropOffPassenger(Passenger passenger) {
@@ -63,7 +78,7 @@ public class Car implements Movable {
     public void addWheels(int quantity) {
         while (quantity > 0) {
             Tire tire = new Tire(1, "someProducer", 16);
-            Wheel wheel = new Wheel((long) this.wheels.size(), 16, tire);
+            Wheel wheel = new Wheel(16, tire);
             wheels.add(wheel);
             quantity--;
         }
@@ -82,7 +97,7 @@ public class Car implements Movable {
     }
 
     public double getMaxSpeedPossible() {
-        if (passengers.size() != 0) {
+        if (passengers == null || passengers.size() != 0) {
             double coefficient = wheels.stream()
                     .map(w -> w.getTire().getWearState())
                     .sorted().findFirst().get();
@@ -163,6 +178,14 @@ public class Car implements Movable {
         this.passengersPresent = passengersPresent;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public List<Passenger> getPassengers() {
         return passengers;
     }
@@ -179,11 +202,11 @@ public class Car implements Movable {
         this.wheels = wheels;
     }
 
-    public Door[] getDoors() {
+    public List<Door> getDoors() {
         return doors;
     }
 
-    public void setDoors(Door[] doors) {
+    public void setDoors(List<Door> doors) {
         this.doors = doors;
     }
 
@@ -244,7 +267,7 @@ public class Car implements Movable {
             return this;
         }
 
-        public CarBuilder setDoors(Door[] doors) {
+        public CarBuilder setDoors(List<Door> doors) {
             newCar.doors = doors;
             return this;
         }
@@ -274,16 +297,14 @@ public class Car implements Movable {
                 && Objects.equals(getEngineType(), car.getEngineType())
                 && Objects.equals(getPassengers(), car.getPassengers())
                 && Objects.equals(getWheels(), car.getWheels())
-                && Arrays.equals(getDoors(), car.getDoors());
+                && Objects.equals(getDoors(), car.getDoors());
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(getManufactureDate(), getEngineType(),
-                getMaxSpeed(), getCurrentSpeed(), getAccelerationTime(),
-                getCapacity(), getPassengersPresent(), getPassengers(), getWheels());
-        result = 31 * result + Arrays.hashCode(getDoors());
-        return result;
+        return Objects.hash(getId(), getBrand(), getModel(), getManufactureDate(),
+                getEngineType(), getMaxSpeed(), getCurrentSpeed(), getAccelerationTime(),
+                getCapacity(), getPassengersPresent(), getPassengers(), getWheels(), getDoors());
     }
 
     @Override
@@ -301,7 +322,7 @@ public class Car implements Movable {
                 + ", passengersPresent=" + passengersPresent
                 + ", passengers=" + passengers + "\n"
                 + ", wheels=" + wheels + "\n"
-                + ", doors=" + Arrays.toString(doors)
+                + ", doors=" + doors
                 + '}';
     }
 }
