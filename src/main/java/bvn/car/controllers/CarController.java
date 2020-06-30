@@ -26,18 +26,18 @@ public class CarController {
         this.carMapper = carMapper;
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public void add(@RequestBody CarRequestDto dto) {
         carService.create(carMapper.dtoToCar(dto));
     }
 
-    @GetMapping("/by-id")
+    @GetMapping("/{id}")
     public CarResponseDto getCarById(@RequestParam(name = "id") Long carId) {
         Car car = carService.getById(carId);
         return carMapper.carToResponseDto(car);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<CarResponseDto> getAll() {
         List<Car> cars = carService.getAll();
         return cars.stream()

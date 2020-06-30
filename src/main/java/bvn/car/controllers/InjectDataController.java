@@ -41,7 +41,7 @@ public class InjectDataController {
         injectData();
     }
 
-    @GetMapping("/inject")
+    @GetMapping()
     public void injectData() {
         List<Wheel> wheels = new ArrayList<>();
         while (wheels.size() < 4) {
