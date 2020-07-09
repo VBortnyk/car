@@ -79,9 +79,8 @@ public class CarTest {
                 Wheel wheel = new Wheel(16, tire);
                 testCar.getWheels().add(wheel);
             }
+            System.out.println("NullPointerException expected! Car can not drive without a driver");
         } catch (NullPointerException e) {
-            return;
         }
-        System.out.println("NullPointerException expected! Car can not drive without a driver");
     }
 }
